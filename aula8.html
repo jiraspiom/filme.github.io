@@ -1,0 +1,31 @@
+
+<html lang="en" ng-app="Curso">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{titulo}}</title>
+        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css">
+        <script src="lib/angular.js"></script>
+
+        <script>
+            angular.module("Curso", []);
+            angular.module("Curso").controller("aula8Controle", function($rootScope, $scope, $http){
+                $rootScope.titulo = "Aula 08"
+                $scope.titulo = "Painel"
+
+                var ctrl = this;
+
+                ctrl.mudarTitulo = function (sNome){
+                    ctrl.nome = ctrl.titulo
+                }
+
+            });
+        </script>
+
+    </head>
+    <body ng-controller="aula8Controle as controle">
+        <div>
+            {{controle.titulo}}
+        </div>        
+    </body>
+</html>

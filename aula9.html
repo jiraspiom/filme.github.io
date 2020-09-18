@@ -1,0 +1,85 @@
+
+<html lang="en" ng-app="Curso">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{titulo}}</title>
+        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css">
+        <script src="lib/angular.js"></script>
+
+        <script>
+            angular.module("Curso", []).run(function($rootScope){
+                $rootScope.titulo = "Aula 10"
+            })
+            
+            .service('BuscaFilmeAPI', function($http, $q){
+                var servico = this;
+
+                servico.BuscarFilme = function(sNome){
+                    var resultado = $q.defer();
+                    var urlApi = "http://www.adorocinema.com/_/autocomplete/"
+                    
+                    $http({
+                        url: urlApi + sNome
+                    }).then(function(response){
+                        var listaResultado = []
+
+
+                        
+                        listaResultado = response.data.results.map(function(oFilmeApi){
+                            return {
+                                titulo: (oFilmeApi.label) ? oFilmeApi.label : oFilmeApi.original_label,
+                                tituloOriginal: oFilmeApi.original_label,
+                                visualizacoes: oFilmeApi.viewcount,
+                                urlCapa: oFilmeApi.data.thumbnail,
+                                infoAdicional: oFilmeApi.data
+                               
+                            };
+                        });
+                        console.log(listaResultado)
+                        resultado.resolve(listaResultado)
+
+                    }, function(){
+                        resultado.rejection();
+                    })
+                    return resultado.promise;
+                }
+            })
+            
+            .controller("listaController", function(BuscaFilmeAPI){
+        
+                var ctrl = this;
+                ctrl.titulo = "Encontre seu Filme" 
+                ctrl.textoBusca  = null;
+                ctrl.lista = [];
+
+                ctrl.Buscar = function(){
+                   BuscaFilmeAPI.BuscarFilme(ctrl.textoBusca).then(function(oLista){
+                    ctrl.lista = oLista
+                   })
+                }
+            });
+        </script>
+
+    </head>
+    <body ng-controller="listaController as lc">
+        <div>
+            {{lc.titulo}}
+
+            <nav class="navbar navbar-light bg-light">
+                <form class="form-inline">
+                  <input ng-model="lc.textoBusca" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                  <button ng-click="lc.Buscar()"class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar Filme</button>
+                </form>
+              </nav>
+        </div> 
+        <h3 ng-show="lista.length"> filmes encontrados </h3> 
+        <ul class="lista-filme">
+            <li ng-repeat= "filme in lc.lista">
+                <img src="{{filme.urlCapa}}" alt="" class="src">
+                {{filme.titulo}} 
+                <p></p>
+            </li>
+        </ul>      
+    </body>
+</html>

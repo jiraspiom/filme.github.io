@@ -1,0 +1,29 @@
+<html lang="en" ng-app="AppAula6">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula angular olo </title>
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.css">
+    <script src="lib/angular.js"></script>
+
+    <script src="app.js"></script>
+ 
+</head>
+
+<body ng-controller="aula6Controler">
+    <div>
+        <h1> {{titulo}}</h1>
+    </div>
+
+    <div>
+        <button ng-click="carregarPessoas()" class="btn btn-success"> carregar pessoas</button>
+    </div>
+
+    <ul>
+        <li ng-repeat="lista in listaPessoas"> nome: {{lista.nome}} idade: {{lista.idade}} </li>
+    </ul>
+
+</body>
+
+</html>
