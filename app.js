@@ -10,5 +10,4 @@ angular.module('AppAula6', []).controller('aula6Controler',function ($scope, $ht
             $scope.listaPessoas = resposta.data;
         })
     };
-
 });
